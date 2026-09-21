@@ -27,7 +27,7 @@
       <select id="planSelect"></select>
     </div>
     <div class="cap-note">
-      スマホの目盛りは <strong>10GB</strong> までを表示します。使いすぎるとスマホが赤くなります。
+      スマホの目盛りは<strong>契約データ容量</strong>までを表示します。使い切るとスマホが赤く発光します。
     </div>
     <button id="resetBtn" class="reset-btn" type="button">使用量をリセット</button>
   </section>
@@ -49,12 +49,12 @@
           <div class="phone-readout">
             <span class="phone-value" id="phoneValue">0.0</span>
             <span class="phone-unit">GB</span>
-            <span class="phone-max">/ 10GB</span>
+            <span class="phone-max" id="phoneMax">/ 10GB</span>
           </div>
           <div class="phone-gauge-track">
             <div class="phone-gauge-fill" id="phoneGaugeFill"></div>
           </div>
-          <p class="phone-alert" id="phoneAlert">10GBを超えました</p>
+          <p class="phone-alert" id="phoneAlert">契約データ容量に達しました</p>
         </div>
         <div class="phone-port" id="phonePort"></div>
       </div>

@@ -36,12 +36,12 @@
     { value: "50", label: "50GB" },
     { value: "unlimited", label: "制限なし" },
   ];
-  const DEFAULT_PLAN_VALUE = "5";
+  const DEFAULT_PLAN_VALUE = "10";
 
   // ---- units (decimal, matching how carriers advertise plans) ---------
   const BITS_PER_MB = 8 * 1000 * 1000;      // 1MB = 1,000,000 bytes
   const BITS_PER_GB = BITS_PER_MB * 1000;   // 1GB = 1000MB
-  const SESSION_CAP_BITS = 10 * BITS_PER_GB; // the phone's visual scale tops out at 10GB
+  const FALLBACK_GAUGE_GB = 10; // used only if the plan is "unlimited", so the gauge still has a scale
 
   const NORMAL_SPEED_MBPS = 20;      // typical 4G speed used for this simulation
   const THROTTLED_SPEED_MBPS = 0.128; // 128kbps, a common Japanese "speed limit" value
@@ -58,6 +58,7 @@
   const phonePort = document.getElementById("phonePort");
   const phoneValue = document.getElementById("phoneValue");
   const phoneGaugeFill = document.getElementById("phoneGaugeFill");
+  const phoneMax = document.getElementById("phoneMax");
   const planSelect = document.getElementById("planSelect");
   const resetBtn = document.getElementById("resetBtn");
   const speedValue = document.getElementById("speedValue");
@@ -90,6 +91,11 @@
 
   function currentSpeedMbps() {
     return throttled ? THROTTLED_SPEED_MBPS : NORMAL_SPEED_MBPS;
+  }
+
+  function gaugeCapBits() {
+    const planGB = getSelectedPlanGB();
+    return (planGB === Infinity ? FALLBACK_GAUGE_GB : planGB) * BITS_PER_GB;
   }
 
   // ---- rendering --------------------------------------------------------
@@ -126,12 +132,14 @@
   }
 
   function renderPhone() {
-    const pct = Math.min(totalBits / SESSION_CAP_BITS, 1) * 100;
+    const capBits = gaugeCapBits();
+    const pct = Math.min(totalBits / capBits, 1) * 100;
     phoneGaugeFill.style.height = pct + "%";
     phoneGaugeFill.classList.toggle("warn", pct >= 60 && pct < 100);
     phoneGaugeFill.classList.toggle("danger", pct >= 100);
     phoneValue.textContent = (totalBits / BITS_PER_GB).toFixed(1);
-    phone.classList.toggle("over-cap", totalBits >= SESSION_CAP_BITS);
+    phoneMax.textContent = "/ " + (capBits / BITS_PER_GB) + "GB";
+    phone.classList.toggle("over-cap", totalBits >= capBits);
   }
 
   function renderDashboard() {
