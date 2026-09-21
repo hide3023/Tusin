@@ -1,1 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>通信速度シミュレーター｜データを送ってみよう</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<div class="app">
+
+  <header class="hero">
+    <h1>データを送ると、通信はどう変わる？</h1>
+    <p class="lede">
+      左のリストから見たいもの・使いたいものを選ぶと、ケーブルの中を光が通ってスマホにデータが届きます。
+      データを使うほどスマホの中にデータが積み上がり、契約データ容量を超えると通信が遅くなる様子を確かめてみましょう。
+    </p>
+  </header>
+
+  <section class="control-bar">
+    <div class="plan-select">
+      <label for="planSelect">契約データ容量（これを超えると速度制限）</label>
+      <select id="planSelect"></select>
+    </div>
+    <div class="cap-note">
+      スマホの目盛りは <strong>10GB</strong> までを表示します。使いすぎるとスマホが赤くなります。
+    </div>
+    <button id="resetBtn" class="reset-btn" type="button">使用量をリセット</button>
+  </section>
+
+  <main class="stage" id="stage">
+
+    <div class="source-panel">
+      <p class="panel-title">送信するデータを選ぶ</p>
+      <div class="source-list" id="sourceList"></div>
+    </div>
+
+    <svg class="cable-layer" id="cableLayer" aria-hidden="true"></svg>
+
+    <div class="phone-column">
+      <div class="phone" id="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <p class="phone-label">スマホの使用量</p>
+          <div class="phone-readout">
+            <span class="phone-value" id="phoneValue">0.0</span>
+            <span class="phone-unit">GB</span>
+            <span class="phone-max">/ 10GB</span>
+          </div>
+          <div class="phone-gauge-track">
+            <div class="phone-gauge-fill" id="phoneGaugeFill"></div>
+          </div>
+          <p class="phone-alert" id="phoneAlert">10GBを超えました</p>
+        </div>
+        <div class="phone-port" id="phonePort"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <section class="dashboard">
+
+    <div class="dash-card speedometer">
+      <p class="dash-title">現在の通信速度</p>
+      <p class="speed-value" id="speedValue">20 Mbps</p>
+      <p class="speed-status" id="speedStatus">通常の速度で通信中</p>
+    </div>
+
+    <div class="dash-card plan-usage">
+      <p class="dash-title">契約データ容量に対する使用量</p>
+      <div class="plan-bar-track">
+        <div class="plan-bar-fill" id="planBarFill"></div>
+      </div>
+      <p class="plan-bar-label" id="planBarLabel">0.0GB / 5GB</p>
+    </div>
+
+    <div class="dash-card time-table-card">
+      <p class="dash-title">それぞれ何秒かかる？（今の速度で計算）</p>
+      <div class="time-table" id="timeTable"></div>
+    </div>
+
+  </section>
+
+  <footer class="notes">
+    <p>
+      通信量の単位：1バイト＝8ビット、1MB＝100万バイト、1GB＝1000MB として計算しています。
+      通常速度は20Mbps、速度制限中は128kbps（0.128Mbps）としてシミュレーションしています。
+    </p>
+  </footer>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
